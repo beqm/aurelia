@@ -121,7 +121,7 @@
 <audio
   id="voice"
   autoplay
-  loop
+  
   src="src/lib/aurelia/voice/startup/aurelia.wav"
   class="w-[150px]"
 />
