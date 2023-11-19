@@ -41,8 +41,8 @@
         "fullscreen": false,
         "resizable": false,
         "title": "aurelia",
-        "width": 800,
-        "height": 600
+        "width": 500,
+        "height": 250
       }
     ]
   }

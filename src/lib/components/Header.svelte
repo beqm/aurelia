@@ -1,4 +1,4 @@
-<header class="z-50 flex w-full shadow-md mt-10 mb-10">
+<header class="z-50 flex w-full shadow-md">
   <div
     class="text-dark p-2 flex justify-center items-center ml-auto mr-auto w-full sm:w-[60%]"
   >

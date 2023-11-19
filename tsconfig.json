@@ -17,6 +17,6 @@
     "checkJs": true,
     "isolatedModules": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/lib/aurelia/synthesis/SpeechSynthesis.cjs", "src/ai/SpeechSynthesis.mjs"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "aurelia/synthesis/SpeechSynthesis.cjs", "src/ai/SpeechSynthesis.mjs"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

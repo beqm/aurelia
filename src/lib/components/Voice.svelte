@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
+  export let justPrompted;
+
   var canvas,
     canvasCtx,
     audioCtx,
@@ -118,10 +120,30 @@
 </script>
 
 <canvas class="shadow-lg" id="canvas" width="720" />
-<audio
-  id="voice"
-  autoplay
-  
-  src="src/lib/aurelia/voice/startup/aurelia.wav"
-  class="w-[150px]"
-/>
+<audio id="voice" autoplay src="../aurelia/voice/startup/aurelia.wav" />
+{#if justPrompted}
+  <audio
+    id="output"
+    autoplay
+    src="../output.wav"
+    on:play={() => {
+      let audio = document.getElementById("output");
+      canvas = document.getElementById("canvas");
+      canvasCtx = canvas.getContext("2d");
+      audioCtx = new (window.AudioContext || window.AudioContext)();
+      source = audioCtx.createMediaElementSource(audio);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 4096;
+      bufferLength = analyser.frequencyBinCount;
+      dataArray = new Float32Array(bufferLength);
+      gainNode = audioCtx.createGain();
+      source.connect(analyser);
+      source.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      setInterval(draw, 16);
+    }}
+    on:ended={() => {
+      justPrompted = false;
+    }}
+  />
+{/if}

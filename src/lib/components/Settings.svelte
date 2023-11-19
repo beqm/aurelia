@@ -1,4 +1,4 @@
-<div>
+<div class="flex">
   <button class="outline-none p-2">
     <svg
       class="text-[#4269a7]"

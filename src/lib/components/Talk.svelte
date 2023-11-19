@@ -42,6 +42,9 @@
         const uint8Array = new Uint8Array(arrayBuffer);
         audioData = Array.from(uint8Array);
 
+        console.log(uint8Array);
+        console.log(audioData);
+
         invoke("save_audio", { data: Array.from(uint8Array) }).then(
           (result) => {
             console.log(result);
