@@ -1,0 +1,6 @@
+CREATE TABLE alarms (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    hour TEXT NOT NULL,
+    days TEXT NOT NULL
+);

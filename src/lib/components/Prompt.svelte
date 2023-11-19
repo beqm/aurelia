@@ -6,11 +6,14 @@
   let prompt = "";
 
   const onEnter = async () => {
+    let result: any = await invoke("prompt_response", { prompt: prompt });
+
+    if (result.status == "202") {
+      dispatch("enter", {
+        justPrompted: true,
+      });
+    }
     prompt = "";
-    await invoke("prompt_response", { prompt: prompt });
-    dispatch("enter", {
-      justPrompted: true,
-    });
   };
 </script>
 

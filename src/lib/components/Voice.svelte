@@ -125,7 +125,7 @@
   <audio
     id="output"
     autoplay
-    src="../output.wav"
+    src={`../data/output.wav?v=${new Date().getTime()}`}
     on:play={() => {
       let audio = document.getElementById("output");
       canvas = document.getElementById("canvas");
