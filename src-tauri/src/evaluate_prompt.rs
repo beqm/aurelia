@@ -142,7 +142,10 @@ pub fn evaluate(input: &str, supervisioning: Option<bool>) -> Result<EventOperat
 
     let mut action_type: ActionType = ActionType::None;
 
-    if normalized_input.contains("remover") || normalized_input.contains("delete") {
+    if normalized_input.contains("remover")
+        || normalized_input.contains("delete")
+        || normalized_input.contains("remova")
+    {
         action_type = ActionType::Remove
     }
 

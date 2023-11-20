@@ -14,10 +14,12 @@
   $: {
     if (supervisioning == true) {
       setInterval(async () => {
-        let result: any = await invoke("supervision");
-        console.log(result);
-        if (result.status == "not-focus") {
-          justPrompted = true;
+        if (supervisioning == true) {
+          let result: any = await invoke("supervision");
+          console.log(result);
+          if (result.status == "not-focus") {
+            justPrompted = true;
+          }
         }
       }, 30000);
     }

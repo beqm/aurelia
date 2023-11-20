@@ -52,6 +52,7 @@
     />
     <button
       on:click={onEnter}
+      on:keypress={press}
       class="bg-[#233758] p-2 pl-4 pr-4 rounded-md absolute right-0"
       ><svg
         fill="currentColor"

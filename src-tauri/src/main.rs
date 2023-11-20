@@ -107,8 +107,8 @@ fn supervision() -> Result<PromptOutput, String> {
         .arg("../aurelia/synthesis/synthethize.js")
         .arg("../data/output.wav")
         .arg(msg.1.unwrap())
-        .arg("reg")
-        .arg("key")
+        .arg("eastus")
+        .arg("b483fa3890894357a7f7af78c7522577")
         .status()
         .map_err(|e| e.to_string())?;
 
@@ -150,6 +150,7 @@ fn calculate_date_difference(start_date: &str, end_date: &str) -> Option<String>
         // If within 7 days, return the specific day of the week
         let weekday_name = end_date.format("%A").to_string();
         let weekday_name_pt = translate_weekday_to_portuguese(&weekday_name);
+        println!("{} {}", weekday_name, weekday_name_pt);
         Some(weekday_name_pt)
     }
 }
@@ -157,12 +158,19 @@ fn calculate_date_difference(start_date: &str, end_date: &str) -> Option<String>
 fn translate_weekday_to_portuguese(weekday_name: &str) -> String {
     match weekday_name {
         "Sun" => "Domingo",
+        "Sunday" => "Domingo",
         "Mon" => "Segunda",
+        "Monday" => "Segunda",
         "Tue" => "Terca",
+        "Tuesday" => "Terca",
         "Wed" => "Quarta",
+        "Wednesday" => "Quarta",
         "Thur" => "Quinta",
+        "Thursday" => "Quinta",
         "Fri" => "Sexta",
+        "Friday" => "Sexta",
         "Sat" => "Sabado",
+        "Saturday" => "Sabado",
         _ => weekday_name, // Se não encontrar uma tradução, retorne o original
     }
     .to_string()
@@ -245,6 +253,7 @@ fn check_reminder() -> Result<PromptOutput, String> {
 
     for r in reminders.unwrap() {
         let result = calculate_date_difference(&formatted_date.to_string(), &r.date);
+        println!("{:?}", result.clone());
         if result.is_some() {
             string_msg.push_str(format!(" {},", result.unwrap()).as_str());
             can_send = true;
@@ -281,30 +290,34 @@ fn check_reminder() -> Result<PromptOutput, String> {
 
 #[tauri::command]
 fn prompt_response(prompt: &str, supervisioning: bool) -> Result<PromptOutput, String> {
-    let input = evaluate(prompt, Some(supervisioning)).unwrap();
+    let input = evaluate(prompt, Some(supervisioning));
+    let mut msg = "Desculpe nao entendi, poderia repetir por favor?".to_string();
+    let mut state = "";
 
-    println!(
-        "[INFO] Synthethyzing aurelia speech: {}",
-        input.msg.as_str()
-    );
+    if let Ok(eo) = input {
+        msg = eo.msg.to_string();
+        state = eo.state;
+    }
+
+    println!("[INFO] Synthethyzing aurelia speech: {}", msg);
 
     let status = Command::new("node")
         .arg("../aurelia/synthesis/synthethize.js")
         .arg("../data/output.wav")
-        .arg(input.msg.as_str())
+        .arg(msg)
         .arg("reg")
         .arg("key")
         .status()
         .map_err(|e| e.to_string())?;
 
     if status.success() {
-        if input.state == "supervisiontrue" {
+        if state == "supervisiontrue" {
             Ok(PromptOutput {
                 status: "supervisiontrue".to_string(),
                 path: "".to_string(),
                 data: None,
             })
-        } else if input.state == "supervisionoff" {
+        } else if state == "supervisionoff" {
             Ok(PromptOutput {
                 status: "supervisionoff".to_string(),
                 path: "".to_string(),
