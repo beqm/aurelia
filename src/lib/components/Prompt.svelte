@@ -2,18 +2,35 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { createEventDispatcher } from "svelte";
 
+  export let supervisioning: boolean;
+
   const dispatch = createEventDispatcher();
   let prompt = "";
 
   const onEnter = async () => {
-    let result: any = await invoke("prompt_response", { prompt: prompt });
+    let result: any = await invoke("prompt_response", {
+      prompt: prompt,
+      supervisioning,
+    });
+    prompt = "";
+
+    if (result.status == "supervisiontrue") {
+      supervisioning = true;
+      dispatch("enter", {
+        justPrompted: true,
+      });
+    } else if (result.status == "supervisionoff") {
+      supervisioning = false;
+      dispatch("enter", {
+        justPrompted: true,
+      });
+    }
 
     if (result.status == "202") {
       dispatch("enter", {
         justPrompted: true,
       });
     }
-    prompt = "";
   };
 </script>
 

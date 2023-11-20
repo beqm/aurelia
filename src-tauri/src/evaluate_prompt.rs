@@ -50,8 +50,32 @@ fn vec_to_alarm_string(alarms: &Vec<Alarm>) -> String {
         .join("\n")
 }
 
-pub fn evaluate(input: &str) -> Result<EventOperation, &'static str> {
+pub fn evaluate(input: &str, supervisioning: Option<bool>) -> Result<EventOperation, &'static str> {
     let normalized_input = input.to_lowercase();
+
+    let is_supervision_event = normalized_input.contains("supervisione")
+        || normalized_input.contains("supervisao")
+        || normalized_input.contains("supervisionar");
+
+    let is_stop_event = normalized_input.contains("pare") || normalized_input.contains("parar");
+
+    if is_supervision_event && supervisioning.unwrap() == false {
+        return Ok(EventOperation {
+            typ: "Desconhecido",
+            msg: format!("Ok, vou te supervisionar."),
+            state: "supervisiontrue",
+            data: None,
+        });
+    }
+
+    if is_supervision_event && is_stop_event && supervisioning.unwrap() == true {
+        return Ok(EventOperation {
+            typ: "Desconhecido",
+            msg: format!("Parando a supervisao."),
+            state: "supervisionoff",
+            data: None,
+        });
+    }
 
     let is_list_event = normalized_input.contains("liste") || normalized_input.contains("mostre");
 
