@@ -10,7 +10,7 @@ use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!("../migrations/");
 
 pub fn establish_connection() -> SqliteConnection {
-    println!("[INFO] Connecting to database");
+    // println!("[INFO] Connecting to database");
 
     // Build url
     // let database_url = "_up_/data/data.db";
@@ -54,7 +54,7 @@ pub fn get_alarms() -> Option<Vec<Alarm>> {
 
     match result {
         Ok(c) => {
-            println!("[SUCCESS] Fetching all alarms");
+            // println!("[SUCCESS] Fetching all alarms");
             return Some(c);
         }
         Err(_) => {

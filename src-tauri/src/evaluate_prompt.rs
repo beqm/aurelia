@@ -134,7 +134,7 @@ pub fn evaluate(input: &str, supervisioning: Option<bool>) -> Result<EventOperat
         }
     }
 
-    let time_re = Regex::new(r"(\d{1,2}:\d{2}\s*[ap]m)").unwrap();
+    let time_re = Regex::new(r"(\d{1,2}:\d{2})").unwrap();
     let time_match = time_re.find(&normalized_input);
 
     let date_re = Regex::new(r"(\d{1,2}/\d{1,2}/\d{4})").unwrap();

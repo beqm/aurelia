@@ -32,11 +32,19 @@
       });
     }
   };
+
+  const press = async (event: KeyboardEvent) => {
+    switch (event.key) {
+      case "Enter":
+        await onEnter();
+    }
+  };
 </script>
 
 <div class="w-full flex justify-center">
   <div class="w-[70%] bg-[#223757] relative">
     <input
+      on:keypress={press}
       class="w-full border bg-[#223757] h-10 placeholder:p-4 rounded-md"
       type="text"
       placeholder="Escreva algo.."

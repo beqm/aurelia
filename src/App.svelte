@@ -4,8 +4,9 @@
   import Header from "./lib/components/Header.svelte";
   import Prompt from "./lib/components/Prompt.svelte";
   import { invoke } from "@tauri-apps/api/tauri";
-
+  import Alarm from "./lib/components/Alarm.svelte";
   import Footer from "./lib/components/Footer.svelte";
+  import { onMount } from "svelte";
 
   let justPrompted = false;
   let supervisioning = false;
@@ -21,6 +22,13 @@
       }, 30000);
     }
   }
+
+  onMount(async () => {
+    let result: any = await invoke("check_reminder");
+    if (result.status == "202") {
+      justPrompted = true;
+    }
+  });
 </script>
 
 <main
@@ -39,3 +47,8 @@
     <!-- <Footer /> -->
   </div>
 </main>
+<Alarm
+  on:time={() => {
+    justPrompted = true;
+  }}
+/>
