@@ -1,5 +1,12 @@
+<script>
+  import { invoke } from "@tauri-apps/api/tauri";
+  const test = async () => {
+    await invoke("screenshot_display");
+  };
+</script>
+
 <div class="flex">
-  <button class="outline-none p-2">
+  <button on:click={test} class="outline-none p-2">
     <svg
       class="text-[#4269a7]"
       fill="currentColor"

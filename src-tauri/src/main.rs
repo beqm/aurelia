@@ -17,6 +17,34 @@ struct PromptOutput {
     status: String,
     path: String,
 }
+
+use screenshots::Screen;
+
+#[tauri::command]
+fn screenshot_display() -> Result<PromptOutput, String> {
+    let screens = Screen::all().unwrap();
+
+    for screen in screens {
+        println!("capturer {screen:?}");
+        let image = screen.capture().unwrap();
+        image.save(format!("../data/display.png")).unwrap();
+    }
+
+    let status = Command::new("python")
+        .arg("../aurelia/vision/analyze-image.py")
+        .status()
+        .map_err(|e| e.to_string())?;
+
+    if status.success() {
+        Ok(PromptOutput {
+            status: "202".to_string(),
+            path: "../data/output.wav".to_string(),
+        })
+    } else {
+        Err("Failed to run synthesize.ts".to_string())
+    }
+}
+
 #[tauri::command]
 fn prompt_response(prompt: &str) -> Result<PromptOutput, String> {
     let input = evaluate(prompt).unwrap();
@@ -47,7 +75,10 @@ fn prompt_response(prompt: &str) -> Result<PromptOutput, String> {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![prompt_response])
+        .invoke_handler(tauri::generate_handler![
+            prompt_response,
+            screenshot_display
+        ])
         .build(tauri::generate_context!())
         .expect("error while running tauri application")
         .run(|app, event| match event {

@@ -13,7 +13,8 @@
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
     "microsoft-cognitiveservices-speech-sdk": "1.32.0",
-    "recordrtc": "^5.6.2"
+    "recordrtc": "^5.6.2",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
